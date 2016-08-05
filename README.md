@@ -1,8 +1,6 @@
-ES6 Marionette project
+Backbone 101
 ======================
-Looking for boilerplate projects to start working with ECMAScript 6 I didn't found a project that fit my requirements, so I take the best part of other projects and put all together here. This project can be used to bootstrap new projects with ECMAScript 6 support.
-
-This is an implementation of [Clean ES6 Project](https://github.com/abiee/clean-es6-project) integrating Backbone.Marionette to the stack.
+This project was built as an example code to learn Backbone basics. Here you will see how to use the Backbone components in a small application.
 
 What's inside
 ----------------
@@ -14,22 +12,21 @@ Batteries included:
  - jQuery
  - Underscore
  - Backbone
- - Marionette
  - Handlebars
  - BrowserSync
- - Karma
- - Mocha, Chai, Sinon
 
 Setup
 -----
 Clone the repository and install the dependencies.
 
-    $ git clone https://github.com/abiee/es6-marionette.git my-project
-    $ cd my-project
+    $ git clone https://github.com/abiee/backbone-101.git
+    $ cd backbone-101
     $ npm install
     $ gulp serve
 
 Do not forget to install globally gulp if not installed yet.
+
+    $ npm install -g gulp
 
 Build
 ------
@@ -43,20 +40,7 @@ It will compile the project and put the result under `dist` directory. You can r
 
 Testing
 ---------
-Two options exists to run tests, the first one is for development process and aims to practice Test Driven Development.
-
-    $ gulp tdd
-
-It will open a Google Chrome instance and run all tests on it, when a file is updated tests will be run again. You can see the rests as a notification or in the console.
-The other option to run tests is for Continuous Integration purposes, it will run all the tests against PanthomJS and output a jUnit format file for analysis.
-    
-    $ gulp test
-
-You can get the results at `.tmp/test-results.xml`.
-
-Contribution
----------------
-If you have ideas or find an error feel free to submit a PR.
+This project does not include tests, however if you are courious you can take a look at [es6-marionette](https://github.com/abiee/es6-marionette) code to see how you can write tests.
 
 Licence
 -------

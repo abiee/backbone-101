@@ -2,7 +2,6 @@
 
 'use strict';
 
-var KarmaServer = require('karma').Server;
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var browserify = require('browserify');
@@ -132,30 +131,6 @@ gulp.task('extras', function () {
   ], {
     dot: true
   }).pipe(gulp.dest('dist'));
-});
-
-// Run karma for development, will watch and reload
-gulp.task('tdd', function(callback) {
-  var karma = new KarmaServer({
-    configFile: __dirname + '/karma.conf.js'
-  }, callback);
-
-  karma.start();
-});
-
-// Run tests and report for ci
-gulp.task('test', function(callback) {
-  var karma = new KarmaServer({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true,
-    browsers: ['PhantomJS'],
-    reporters: ['dots', 'junit'],
-    junitReporter: {
-      outputFile: '.tmp/test-results.xml'
-    }
-  }, callback);
-
-  karma.start();
 });
 
 // Run development server environmnet
