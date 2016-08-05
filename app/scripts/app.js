@@ -1,4 +1,4 @@
-import Backbone from 'backbone';
+var Backbone = require('backbone');
 
 /* eslint-disable */
 console.log(Backbone);

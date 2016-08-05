@@ -14,7 +14,7 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
 // Bundle files with browserify
-gulp.task('browserify', function () {
+gulp.task('browserify', () => {
   // set up the browserify instance on a task basis
   var bundler = browserify({
     entries: 'app/scripts/app.js',
@@ -25,7 +25,7 @@ gulp.task('browserify', function () {
 
   bundler = watchify(bundler);
 
-  var rebundle = function() {
+  var rebundle = () => {
     return bundler.bundle()
       .on('error', $.util.log)
       .pipe(source('app.js'))
@@ -35,7 +35,7 @@ gulp.task('browserify', function () {
         .on('error', $.util.log)
       .pipe($.sourcemaps.write('./'))
       .pipe(gulp.dest('.tmp/scripts'));
-  }
+  };
 
   bundler.on('update', rebundle);
 
@@ -43,7 +43,7 @@ gulp.task('browserify', function () {
 });
 
 // Bundle files with browserify for production
-gulp.task('browserify:dist', function () {
+gulp.task('browserify:dist', () => {
   // set up the browserify instance on a task basis
   var bundler = browserify({
     entries: 'app/scripts/app.js',
@@ -59,12 +59,22 @@ gulp.task('browserify:dist', function () {
     .pipe(gulp.dest('dist/scripts'));
 });
 
+// Run express server
+gulp.task('express', () => {
+  $.nodemon({
+    script: 'server.js',
+    ignore: 'app'
+  });
+});
+
 // Lint Javascript
-gulp.task('lint', function () {
+gulp.task('lint', () => {
   return gulp.src([
-      'app/scripts/**/*.js',
-      '!app/scripts/config.js',
-      '!app/scripts/vendor/**/*.js'
+    'gulpfile.js',
+    'server.js',
+    'app/scripts/**/*.js',
+    '!app/scripts/config.js',
+    '!app/scripts/vendor/**/*.js'
   ])
     .pipe(reload({stream: true, once: true}))
     .pipe($.eslint())
@@ -73,7 +83,7 @@ gulp.task('lint', function () {
 });
 
 // Optimize images
-gulp.task('images', function () {
+gulp.task('images', () => {
   return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
@@ -84,7 +94,7 @@ gulp.task('images', function () {
 });
 
 // Copy web fonts to dist
-gulp.task('fonts', function () {
+gulp.task('fonts', () => {
   return gulp.src([
     'app/{,styles/}fonts/**/*',
     'node_modules/bootstrap/dist/fonts/**/*'
@@ -94,7 +104,7 @@ gulp.task('fonts', function () {
 });
 
 // Compile and automatically prefix stylesheets
-gulp.task('styles', function () {
+gulp.task('styles', () => {
   return gulp.src('app/styles/main.css')
     .pipe($.sourcemaps.init())
     .pipe($.postcss([
@@ -106,7 +116,7 @@ gulp.task('styles', function () {
 });
 
 // Scan your HTML for assets & optimize them
-gulp.task('html', ['styles'], function () {
+gulp.task('html', ['styles'], () => {
   return gulp.src('app/*.html')
     .pipe($.htmlReplace())
     .pipe($.useref())
@@ -117,14 +127,14 @@ gulp.task('html', ['styles'], function () {
 
 // Clean output directory and cached images
 gulp.task('clean', function (callback) {
-  var del = require('del')
-  del(['.tmp', 'dist'], function () {
+  var del = require('del');
+  del(['.tmp', 'dist'], () => {
     $.cache.clearAll(callback);
   });
 });
 
 // Copy assets to distribution path
-gulp.task('extras', function () {
+gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
     '!app/*.html'
@@ -134,7 +144,7 @@ gulp.task('extras', function () {
 });
 
 // Run development server environmnet
-gulp.task('serve', ['styles', 'browserify'], function () {
+gulp.task('serve', ['styles', 'browserify', 'express'], () => {
   browserSync({
     notify: false,
     port: 9000,
@@ -161,7 +171,7 @@ gulp.task('serve', ['styles', 'browserify'], function () {
 });
 
 // Run web server on distribution files
-gulp.task('serve:dist', function() {
+gulp.task('serve:dist', ['express'], function() {
   browserSync({
     notify: false,
     port: 9000,
@@ -175,8 +185,8 @@ gulp.task('serve:dist', function() {
 });
 
 // Build the project for distribution
-gulp.task('build', ['lint', 'browserify:dist', 'html', 'images', 'fonts', 'extras'], function () {
-  var size = $.size({title: 'build', gzip: true })
+gulp.task('build', ['lint', 'browserify:dist', 'html', 'images', 'fonts', 'extras'], () => {
+  var size = $.size({title: 'build', gzip: true });
   return gulp.src('dist/**/*')
     .pipe(size)
     .pipe($.notify({
@@ -189,6 +199,6 @@ gulp.task('build', ['lint', 'browserify:dist', 'html', 'images', 'fonts', 'extra
 });
 
 // Clean all and build from scratch
-gulp.task('default', ['clean'], function () {
+gulp.task('default', ['clean'], () => {
   gulp.start('build');
 });
