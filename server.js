@@ -1,5 +1,6 @@
 var http = require('http');
 var express = require('express');
+var cors = require('cors');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var crispy = require('crispy-string');
@@ -17,7 +18,21 @@ class NotFound extends Error {
 class Database {
   constructor() {
     this.ID_LENGHT = 32;
-    this.books = {};
+    this.books = {
+      CVPF01x84gdHEEK1rlMI0Su8m5nTx1C0: {
+        id: "CVPF01x84gdHEEK1rlMI0Su8m5nTx1C0",
+        title: "Crónica de una muerte anunciada",
+        author: "García Márquez",
+        price: 200, 
+        url: "http://example.com"
+      },
+      lGFsInTgGA7IUctS4urmAt3x2sJ5KTCi: {
+        id: "lGFsInTgGA7IUctS4urmAt3x2sJ5KTCi",
+        title: "Un mundo feliz",
+        author: "Aldous Huxley",
+        price: 230
+      }
+    };
   }
 
   createBook(book) {
@@ -65,6 +80,7 @@ var database = new Database();
 var app = express();
 
 app.use(morgan('dev'));
+app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/books', (req, res) => {
